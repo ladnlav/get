@@ -1,29 +1,40 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import show
 import math
 from scipy import integrate
-from matplotlib.streamplot import _integrate_rk12
 
-def f(ksi,eta,p):
-    return math.exp(ksi*ksi+(p-eta)*(p-eta))
+def f(x, y, a,b):   #podint funct
+    return np.exp(b)/b*np.exp(1/(2*b)*(x*x+(a-y)*(a-y)))
 
-s = 100
-st = s*10
+matr = open('matrix.txt','w') #file with matrix of raspred
 
-A0 = 15
-lamda = 620
-b = 1
-g=np.zeros((s,st))
+l=0.005
+s=100  #amount of points on y
+st=100 #amount of points on z
 
-z = np.linspace(0, s, st)
-y = np.linspace(0,b,s)
+g = np.zeros((s,st)) #our empty matrix
+
+z = np.zeros(st)
+y = np.zeros(s)
+
+for i in range(0,s):
+    y[i]=i
+for k in range(0,st):
+    z[k]=k
+#z = np.linspace(0, 10, st) #point on z axe
+#y = np.linspace(0,1,s) #point on y axe
 
 
-for i in range(0, s):
-    for j in range(0,st):
-        v, err = integrate.dblquad(f, 0, b, lambda eta: -100,100,args = (y[i]))
-        g[i][j] = v
+for i in range(0,s):
+    for k in range(0,st):
+        args = [y[i],z[k]]
+        v, err = integrate.dblquad(f, 0, l, -np.inf, np.inf, args)
+        g[i][k]=v
+    print("it's ", i/10, "% of progress")
+    
 
-#plt.plot(z,y,g)
-#plt.show()
+np.savetxt("matrix.txt", g, fmt='%.8e')
+print(z,"\n", y,"\n",g)
+#print(z)
+#print(y)
+
