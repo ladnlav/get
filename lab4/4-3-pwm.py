@@ -16,8 +16,4 @@ try:
         input("Press return to stop:")
         p.stop()
 finally:
-    GPIO.cleanup() 
-
-
-
-GPIO.cleanup() 
+    GPIO.cleanup()
