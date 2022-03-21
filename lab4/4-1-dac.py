@@ -1,5 +1,4 @@
 import RPi.GPIO as GPIO
-import time
 
 def notdigit(str):
     if str.isdigit():
